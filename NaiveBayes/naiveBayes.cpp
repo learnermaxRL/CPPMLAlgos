@@ -1,6 +1,6 @@
 #include "naive_bayes.h"
 #include<iostream>
-#include<wchar.h>
+// #include<wchar.h>
 
 
 
@@ -67,6 +67,7 @@ int main (){
 
 
     NaiveBayes nb;
+    std::cout<<"jjjjjjjjj"<<"\n";
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("second",{0,0,1,1,0,0,1});
     nb.AddData("third",{0,0,1,1,0,0,1});
