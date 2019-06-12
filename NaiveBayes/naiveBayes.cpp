@@ -34,7 +34,8 @@ void NaiveBayes::calculateProbs(){
                 it_feat++;
             }
 
-
+        it++;
+        
     }
 
 }
