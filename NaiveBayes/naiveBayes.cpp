@@ -14,26 +14,41 @@ void NaiveBayes::AddData(std::string cl,std::vector<int> dataF){
 
 void NaiveBayes::calculateProbs(){
 
+    
+
     for (int i=0; i < trainData.size();i++){
 
         classProbMap[trainData[i].label]++;
-        std::vector<int> featCounter(featureVecsize,0);
+       
+        
         for (int j=0;j< NaiveBayes::featureVecsize; j++){
              if (trainData[i].val[j] !=0) {
-             *( classProbFeaturewise[trainData[i].label].begin() + j)++;}
+                
+                if (classProbFeaturewise[trainData[i].label].size() == 0){
+                       std::vector<double> featCounter(featureVecsize+1,0);
+                       classProbFeaturewise[trainData[i].label] = featCounter  ;
+
+                }
+             classProbFeaturewise[trainData[i].label][j]++;}
         }
     }
     std::map<int, double>::iterator it = classProbMap.begin();
     
     while (it!=classProbMap.end()){
         it->second = it->second/trainData.size();
-        std::vector<double>::iterator it_feat = classProbFeaturewise[it->second].begin();
-            while (it_feat!= classProbFeaturewise[it->second].end()){
+        std::vector<double>::iterator it_feat = classProbFeaturewise[it->first].begin();
+            int SumFeatureClass = 0 ;
+            while (it_feat!= classProbFeaturewise[it->first].end()){
 
-                *it_feat = *it_feat/trainData.size();
+                SumFeatureClass = SumFeatureClass + *it_feat;
                 it_feat++;
             }
+            it_feat = classProbFeaturewise[it->first].begin();
+            while (it_feat!= classProbFeaturewise[it->first].end()){
 
+                *it_feat = *it_feat/SumFeatureClass;
+                it_feat++;
+            }
         it++;
         
     }
@@ -54,10 +69,9 @@ std::vector<double> NaiveBayes::Predict(std::vector<int> da){
             if (da[j] !=0 ){
                 p = p * classProbFeaturewise[x][j];
             }
-        probVec.push_back(p);
-
-
+        
         }
+        probVec.push_back(p);
     }
     return probVec;
 
@@ -86,6 +100,7 @@ int main (){
     std::vector<double>::iterator it = res.begin();
     while (it!=res.end()){
         std::cout<< *it<<"\n";
+        it ++;
 
     }
 

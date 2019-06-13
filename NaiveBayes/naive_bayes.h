@@ -31,6 +31,8 @@ class NaiveBayes {
     labelmap.insert({"first",0});
     labelmap.insert({"second",1});
     labelmap.insert({"third",2});
+    labelmap.insert({"fourth",3});
+
     // std::cout<<"done..!"<<"\n";
 
 };
