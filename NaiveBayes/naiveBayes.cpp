@@ -14,7 +14,13 @@ void NaiveBayes::AddData(std::string cl,std::vector<int> dataF){
 
 void NaiveBayes::calculateProbs(){
 
-    
+ // Initialzing map which contains conditional probability of feature vec wrt classes
+    for (int labLength = 0; labLength < labelmap.size();labLength++){
+        
+        std::vector<double> featCounter(featureVecsize+1,0);
+        classProbFeaturewise[labLength] = featCounter;
+
+    }
 
     for (int i=0; i < trainData.size();i++){
 
@@ -24,11 +30,6 @@ void NaiveBayes::calculateProbs(){
         for (int j=0;j< NaiveBayes::featureVecsize; j++){
              if (trainData[i].val[j] !=0) {
                 
-                if (classProbFeaturewise[trainData[i].label].size() == 0){
-                       std::vector<double> featCounter(featureVecsize+1,0);
-                       classProbFeaturewise[trainData[i].label] = featCounter  ;
-
-                }
              classProbFeaturewise[trainData[i].label][j]++;}
         }
     }
@@ -84,15 +85,15 @@ int main (){
     NaiveBayes nb;
     std::cout<<"jjjjjjjjj"<<"\n";
     nb.AddData("first",{0,0,1,1,0,0,1});
-    nb.AddData("second",{0,0,1,1,0,0,1});
-    nb.AddData("third",{0,0,1,1,0,0,1});
+    nb.AddData("first",{0,0,1,1,0,0,1});
+    nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("fourth",{0,0,1,1,1,0,1});
     nb.AddData("third",{0,0,1,1,0,0,1});
     nb.AddData("fourth",{1,0,1,1,0,0,1});
     nb.AddData("first",{1,0,1,1,0,0,1});
-    nb.AddData("second",{0,0,1,0,1,1,1});
+    nb.AddData("first",{0,0,1,0,1,1,1});
     nb.AddData("fourth",{0,0,1,0,1,1,1});
-    nb.AddData("second",{0,0,1,0,1,1,1});
+    nb.AddData("first",{0,0,1,0,1,1,1});
     nb.AddData("third",{1,0,1,0,1,1,1});
     nb.AddData("first",{1,1,1,0,1,1,1});
     nb.train();
