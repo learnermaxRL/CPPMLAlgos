@@ -1,15 +1,18 @@
 #include "naive_bayes.h"
 #include<iostream>
-// #include<wchar.h>
 
 
 
+// this function adds data to our training list
 void NaiveBayes::AddData(std::string cl,std::vector<int> dataF){
 
+    //check if the label is  part of label map ,add otherwise
     if (labelmap.find(cl) == labelmap.end()){
         labelmap.insert ({cl,numClasses});
         numClasses ++;
     }
+    //each data is pushed into vector as label which is int,and feature vector as val in struct
+    //TO:DO add error hadnling in case feature vector size varies
     data d;
     d.label = NaiveBayes::labelmap[cl];
     d.val = dataF;
@@ -18,7 +21,7 @@ void NaiveBayes::AddData(std::string cl,std::vector<int> dataF){
 
 void NaiveBayes::calculateProbs(){
 
- // Initialzing map which contains conditional probability of feature vec wrt classes
+ // Initialzing map which will store conditional probability of feature vec wrt classes (P(xi/C))
     for (int labLength = 0; labLength < labelmap.size();labLength++){
         
         std::vector<double> featCounter(featureVecsize+1,0);
@@ -26,7 +29,7 @@ void NaiveBayes::calculateProbs(){
 
     }
 
-// calculating 
+// Iterating through train data 
     for (int i=0; i < trainData.size();i++){
 
         //calculating class occurences
@@ -66,34 +69,37 @@ void NaiveBayes::calculateProbs(){
 
 }
 void NaiveBayes::train(){
+    //initializing feature vector size TO:DO add error handling
     NaiveBayes::featureVecsize = trainData[0].val.size();
     calculateProbs();
 
 }
 std::vector<double> NaiveBayes::Predict(std::vector<int> da){
 
-    std::string predicClass;
-    double highest = 0;
+    std::string predicClass; //variable which will store class with highest probabaility
+    double highest = 0; //variable which will store prob of class with highest probabaility
     std::cout << "Predicting.."<<'\n';
     std::vector<double> probVec;
     double p;
     std::map<std::string,int>::iterator iteratormap = labelmap.begin();
     while (iteratormap != labelmap.end()) {
-        p = classProbMap[iteratormap->second];
-        for (int j = 0 ; j < da.size(); j++){
+        p = classProbMap[iteratormap->second]; //(P(Ck))
+        for (int j = 0 ; j < da.size(); j++){ //looping through each feature in feature vector and checking if its 0 or 1
             if (da[j] !=0 ){
+                //product of (P(xi/C))
                 p = p * classProbFeaturewise[iteratormap->second][j];
             }
         
         }
-        std::cout<< p << " "<< iteratormap->first<<"\n";
+        // std::cout<< p << " "<< iteratormap->first<<"\n";
         if (p>highest){
+            // if probability of class is highest than current assign that as highest probability
             predicClass = iteratormap->first;
             highest=p;
         }
         iteratormap++;
     }
-    std::cout <<"Predicted class is "<<predicClass;
+    std::cout <<"Predicted class is "<<predicClass<<std::endl;
     return probVec;
 
 }
@@ -103,6 +109,7 @@ int main (){
 
 
     NaiveBayes nb;
+ // add some random data
 
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("first",{0,0,1,1,0,0,1});
@@ -116,7 +123,10 @@ int main (){
     nb.AddData("first",{0,0,1,0,1,1,1});
     nb.AddData("third",{1,0,1,0,1,1,1});
     nb.AddData("first",{1,1,1,0,1,1,1});
+    // train NB algo
     nb.train();
+
+    //get prediction for new point
     std::vector<double> res =  nb.Predict({0,0,0,0,1,0,1});
     
 
