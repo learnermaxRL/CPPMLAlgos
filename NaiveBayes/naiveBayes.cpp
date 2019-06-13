@@ -72,18 +72,23 @@ void NaiveBayes::train(){
 }
 std::vector<double> NaiveBayes::Predict(std::vector<int> da){
 
+   std::cout << "Predicting.."<<'\n';
     std::vector<double> probVec;
     double p;
-    for (int x = 0; x < labelmap.size();x++){
-        p = classProbMap[x];
+    std::map<std::string,int>::iterator iteratormap = labelmap.begin();
+    while (iteratormap != labelmap.end()) {
+        p = classProbMap[iteratormap->second];
         for (int j = 0 ; j < da.size(); j++){
             if (da[j] !=0 ){
-                p = p * classProbFeaturewise[x][j];
+                p = p * classProbFeaturewise[iteratormap->second][j];
             }
         
         }
+        std::cout<<"Probability of class "<<iteratormap->first<< " :" << p<<"\n";
         probVec.push_back(p);
+        iteratormap++;
     }
+    std::cout <<"\n";
     return probVec;
 
 }
@@ -108,12 +113,7 @@ int main (){
     nb.AddData("first",{1,1,1,0,1,1,1});
     nb.train();
     std::vector<double> res =  nb.Predict({0,0,0,0,1,0,1});
-    std::vector<double>::iterator it = res.begin();
-    while (it!=res.end()){
-        std::cout<< *it<<"\n";
-        it ++;
-
-    }
+    
 
    return 0;
 
