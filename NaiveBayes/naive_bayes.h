@@ -8,8 +8,8 @@
 
 struct data{
 
-    int label;
-    std::vector<int> val;
+    int label; //class label index
+    std::vector<int> val; //value in form of ine hot vector
 
 
 };
@@ -17,22 +17,16 @@ struct data{
 class NaiveBayes {
 
     private:
-        int numClasses;
-        std::vector<data> trainData;
-        int featureVecsize;
-        std::map<std::string,int> labelmap ;
-        std::map<int,double> classProbMap;
-        std::map<int,std::vector<double> > classProbFeaturewise;
+        int numClasses = 0; // stores number of clases
+        std::vector<data> trainData; //stores training data
+        int featureVecsize; //stores size of feature vector
+        std::map<std::string,int> labelmap ; //stores labels to index mapping
+        std::map<int,double> classProbMap; //stores (P(Ck))
+        std::map<int,std::vector<double> > classProbFeaturewise; //stores (P(xi/Ck))
 
     
     public:
         NaiveBayes(){
-
-    labelmap.insert({"first",0});
-    labelmap.insert({"second",1});
-    labelmap.insert({"third",2});
-    labelmap.insert({"fourth",3});
-
     // std::cout<<"done..!"<<"\n";
 
 };

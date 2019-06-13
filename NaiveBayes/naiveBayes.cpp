@@ -6,6 +6,10 @@
 
 void NaiveBayes::AddData(std::string cl,std::vector<int> dataF){
 
+    if (labelmap.find(cl) == labelmap.end()){
+        labelmap.insert ({cl,numClasses});
+        numClasses ++;
+    }
     data d;
     d.label = NaiveBayes::labelmap[cl];
     d.val = dataF;
@@ -22,11 +26,13 @@ void NaiveBayes::calculateProbs(){
 
     }
 
+// calculating 
     for (int i=0; i < trainData.size();i++){
 
+        //calculating class occurences
         classProbMap[trainData[i].label]++;
        
-        
+        //calculating each feature occurence per class
         for (int j=0;j< NaiveBayes::featureVecsize; j++){
              if (trainData[i].val[j] !=0) {
                 
@@ -35,15 +41,19 @@ void NaiveBayes::calculateProbs(){
     }
     std::map<int, double>::iterator it = classProbMap.begin();
     
+// converting counters to probabailities
     while (it!=classProbMap.end()){
-        it->second = it->second/trainData.size();
+        it->second = it->second/trainData.size(); //converting class counter to probability
+        
         std::vector<double>::iterator it_feat = classProbFeaturewise[it->first].begin();
             int SumFeatureClass = 0 ;
+            //calculating total num of counts of each feature
             while (it_feat!= classProbFeaturewise[it->first].end()){
 
                 SumFeatureClass = SumFeatureClass + *it_feat;
                 it_feat++;
             }
+            //converting each feature counter per class to probability
             it_feat = classProbFeaturewise[it->first].begin();
             while (it_feat!= classProbFeaturewise[it->first].end()){
 
@@ -83,7 +93,7 @@ int main (){
 
 
     NaiveBayes nb;
-    std::cout<<"jjjjjjjjj"<<"\n";
+
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("first",{0,0,1,1,0,0,1});
