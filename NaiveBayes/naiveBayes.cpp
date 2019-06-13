@@ -72,7 +72,9 @@ void NaiveBayes::train(){
 }
 std::vector<double> NaiveBayes::Predict(std::vector<int> da){
 
-   std::cout << "Predicting.."<<'\n';
+    std::string predicClass;
+    double highest = 0;
+    std::cout << "Predicting.."<<'\n';
     std::vector<double> probVec;
     double p;
     std::map<std::string,int>::iterator iteratormap = labelmap.begin();
@@ -84,11 +86,14 @@ std::vector<double> NaiveBayes::Predict(std::vector<int> da){
             }
         
         }
-        std::cout<<"Probability of class "<<iteratormap->first<< " :" << p<<"\n";
-        probVec.push_back(p);
+        std::cout<< p << " "<< iteratormap->first<<"\n";
+        if (p>highest){
+            predicClass = iteratormap->first;
+            highest=p;
+        }
         iteratormap++;
     }
-    std::cout <<"\n";
+    std::cout <<"Predicted class is "<<predicClass;
     return probVec;
 
 }
@@ -102,7 +107,7 @@ int main (){
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("first",{0,0,1,1,0,0,1});
     nb.AddData("first",{0,0,1,1,0,0,1});
-    nb.AddData("fourth",{0,0,1,1,1,0,1});
+    nb.AddData("fifth",{0,0,1,1,1,0,1});
     nb.AddData("third",{0,0,1,1,0,0,1});
     nb.AddData("fourth",{1,0,1,1,0,0,1});
     nb.AddData("first",{1,0,1,1,0,0,1});
