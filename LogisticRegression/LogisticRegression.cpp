@@ -114,30 +114,34 @@ int main()
     }
     
     lreg.w = w;
+    lreg.lr = 0.005;
 
     std::vector<double> r;
     float x1, x2, x3, y;
     Data d;
 
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 100; i++)
     {
 
-        x1 = (float)rand() / RAND_MAX;
-        x2 = (float)rand() / RAND_MAX;
-        x3 = (float)rand() / RAND_MAX;
+        x1 = (float)rand() / RAND_MAX *1;
+        x2 = (float)rand() / RAND_MAX *1;
+        x3 = (float)rand() / RAND_MAX *1;
         r.push_back(x1);
         r.push_back(x2);
         r.push_back(x3);
         d.featVector = r;
 
-        y = 2 * x1 + 3 * x2 + 4 * x3;
+        y = 2 * x1 - 3 * x2 + 4 * x3;
         d.label = y;
 
         lreg.dataset.push_back(d);
         r.clear();
     }
+    std::cout <<"Enter num steps";
+    int ss;
 
-    lreg.train(5);
+    std::cin>>ss;
+    lreg.train(ss);
 
     return 0;
 }
