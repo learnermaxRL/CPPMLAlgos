@@ -1,6 +1,11 @@
 #include <vector>
 #include <cmath>
+#include <random>
+#include <numeric>
+#include <iostream>
+#include <functional>
 // #include<>
+#include <algorithm>
 
 struct Data{
 
@@ -14,14 +19,6 @@ struct Weights{
 
     std::vector<double> params;
     
-    Weights(int n){
-
-        for (int i=0;i<n;i++){
-            params.push_back(0.0);
-        }
-    }
-
-
 };
 
 
@@ -31,7 +28,7 @@ class LogisticRegression{
         public:
             float lr;
             std::vector<Data> dataset;
-            Weights w(3);
+            Weights w;
             std::vector<double> calculateGradient(Data &, double *);
             void doGradientDescent(std::vector<double> &);
             void doGradientDescentData(std::vector<Data> &,double *);
