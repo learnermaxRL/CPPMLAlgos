@@ -5,12 +5,13 @@ std::vector<double> LogisticRegression::calculateGradient(Data &d, double *loss)
     // defining grad of logisitc function
 
     std::vector<double> gradVec;
-    double r1 = std::inner_product(d.featVector.begin(), d.featVector.end(), LogisticRegression::w.params.begin(), 0) - d.label;
+    double temp_ = std::inner_product(d.featVector.begin(), d.featVector.end(), w.params.begin(), 0);
+    double r1 = temp_ - d.label;
     *loss = r1 * r1;
-    std::vector<double>::iterator it = LogisticRegression::w.params.begin();
+    std::vector<double>::iterator it = w.params.begin();
     std::vector<double>::iterator it_d = d.featVector.begin();
     double grad_;
-    while (it != LogisticRegression::w.params.end())
+    while (it != w.params.end())
     {
 
         grad_ = *it * *it_d;
@@ -26,7 +27,7 @@ std::vector<double> LogisticRegression::calculateGradient(Data &d, double *loss)
 void LogisticRegression::doGradientDescent(std::vector<double> &gradVec)
 {
 
-    std::vector<double>::iterator it_w = LogisticRegression::w.params.begin();
+    std::vector<double>::iterator it_w = w.params.begin();
     std::vector<double>::iterator it_g = gradVec.begin();
 
     while (it_w != w.params.end())
@@ -73,22 +74,22 @@ void LogisticRegression::doGradientDescentData(std::vector<Data> &d, double *l)
 
 void LogisticRegression::train(int steps)
 {
-    double* loss_epoch;
-    double* loss_data;
+    double* loss_epoch = new double;
+    double* loss_data = new double;
     for (int i = 0; i < steps; i++)
     {
-        *loss_epoch = 0 ;
-        *loss_data = 0 ;
+        *loss_epoch = 0.0 ;
+        *loss_data = 0.0 ;
         std::vector<Data>::iterator data_iter = LogisticRegression::dataset.begin();
         while (data_iter != LogisticRegression::dataset.end())
         {
 
-            LogisticRegression::doGradientDescent(*data_iter, loss_data);
+            LogisticRegression::doGradientDescentData(*data_iter, loss_data);
             *loss_epoch = *loss_epoch + *loss_data;
             data_iter++;
         }
 
-        std::cout << "Epoch " << i << "Loss: " << loss_epoch << "\n";
+        std::cout << "Epoch " << i << "Loss: " << *loss_epoch << "\n";
     }
 }
 
@@ -102,7 +103,7 @@ int main()
 
         std::random_device rd; 
     // Mersenne twister PRNG, initialized with seed from previous random device instance
-        std::mt19937 gen(rd());
+        std::mt19937 gen(rd()); 
         std::normal_distribution<float> d(1, 2); 
         double sample;
         for (int i=0;i<sz;i++){
@@ -112,10 +113,10 @@ int main()
         }
     }
     
-
+    lreg.w = w;
 
     std::vector<double> r;
-    int x1, x2, x3, y;
+    float x1, x2, x3, y;
     Data d;
 
     for (int i = 0; i < 6; i++)

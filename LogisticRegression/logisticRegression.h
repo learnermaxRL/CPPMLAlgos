@@ -7,6 +7,7 @@
 // #include<>
 #include <algorithm>
 
+
 struct Data{
 
     int label;
