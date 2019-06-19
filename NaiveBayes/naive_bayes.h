@@ -27,12 +27,10 @@ class NaiveBayes {
     
     public:
         NaiveBayes(){
-    // std::cout<<"done..!"<<"\n";
-
 };
          
          void calculateProbs();
          void train();
-         std::vector<double>  Predict(std::vector<int>);
+         std::vector<double> Predict(std::vector<int>);
          void AddData(std::string ,std::vector<int> );
 };
