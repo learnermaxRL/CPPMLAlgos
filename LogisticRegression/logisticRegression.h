@@ -10,7 +10,7 @@
 
 struct Data{
 
-    int label;
+    double label;
     std::vector<double> featVector;
 
 };

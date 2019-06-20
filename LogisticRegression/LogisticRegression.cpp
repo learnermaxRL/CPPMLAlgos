@@ -14,7 +14,7 @@ std::vector<double> LogisticRegression::calculateGradient(Data &d, double *loss)
     while (it != w.params.end())
     {
 
-        grad_ = *it * *it_d;
+        grad_ =  *it_d;
         gradVec.push_back(grad_ * r1) ;
 
         it++;
@@ -42,7 +42,7 @@ void LogisticRegression::doGradientDescent(std::vector<double> &gradVec)
 void LogisticRegression::doGradientDescentData(Data &d, double *l)
 {
 
-    std::vector<double> gradVecSum;
+    // std::vector<double> gradVecSum;
     std::vector<double> gradVec;
     // double loss = 0;
     gradVec = LogisticRegression::calculateGradient(d, l);
@@ -57,7 +57,7 @@ void LogisticRegression::doGradientDescentData(std::vector<Data> &d, double *l)
     std::vector<Data>::iterator it_d = d.begin();
     std::vector<double> gradVec;
     *l = 0;
-    double* loss;
+    double* loss = new double;
     *loss = 0;
 
         while (it_d != d.end())
@@ -70,6 +70,7 @@ void LogisticRegression::doGradientDescentData(std::vector<Data> &d, double *l)
     }
     // std::cout << "Total loss in batch : " << loss_sum;
     doGradientDescent(gradVecSum);
+    delete loss;
 }
 
 void LogisticRegression::train(int steps)
@@ -83,7 +84,7 @@ void LogisticRegression::train(int steps)
         std::vector<Data>::iterator data_iter = LogisticRegression::dataset.begin();
         while (data_iter != LogisticRegression::dataset.end())
         {
-
+            *loss_data = 0;
             LogisticRegression::doGradientDescentData(*data_iter, loss_data);
             *loss_epoch = *loss_epoch + *loss_data;
             data_iter++;
@@ -114,10 +115,10 @@ int main()
     }
     
     lreg.w = w;
-    lreg.lr = 0.005;
+    lreg.lr = 0.1;
 
     std::vector<double> r;
-    float x1, x2, x3, y;
+    double x1, x2, x3, y;
     Data d;
 
     for (int i = 0; i < 100; i++)
