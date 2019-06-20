@@ -1,5 +1,8 @@
 #include "logisticRegression.h"
 
+
+//Function which calculates gradient wrt loss of data point as per mean squared error loss
+
 std::vector<double> LogisticRegression::calculateGradient(Data &d, double *loss)
 {
     // defining grad of logisitc function
@@ -24,6 +27,8 @@ std::vector<double> LogisticRegression::calculateGradient(Data &d, double *loss)
     return gradVec;
 }
 
+
+//Updating weight parameters
 void LogisticRegression::doGradientDescent(std::vector<double> &gradVec)
 {
 
@@ -39,6 +44,9 @@ void LogisticRegression::doGradientDescent(std::vector<double> &gradVec)
     }
 }
 
+
+//Calculate gradient and update the weights
+
 void LogisticRegression::doGradientDescentData(Data &d, double *l)
 {
 
@@ -50,6 +58,8 @@ void LogisticRegression::doGradientDescentData(Data &d, double *l)
     doGradientDescent(gradVec);
 }
 
+
+//code for batch gradient descent
 void LogisticRegression::doGradientDescentData(std::vector<Data> &d, double *l)
 {
 
@@ -73,6 +83,8 @@ void LogisticRegression::doGradientDescentData(std::vector<Data> &d, double *l)
     delete loss;
 }
 
+
+//Perform weight updates for n steps
 void LogisticRegression::train(int steps)
 {
     double* loss_epoch = new double;
@@ -95,11 +107,11 @@ void LogisticRegression::train(int steps)
 }
 
 int main()
-{
+{   //generating random data and initializing weights
     std::random_device rd;
     LogisticRegression lreg;
     Weights w;
-    int sz = 3;
+    int sz = 2;
     {
 
         std::random_device rd; 
@@ -113,26 +125,28 @@ int main()
 
         }
     }
-    
+    //set wieghts and learning rate
     lreg.w = w;
-    lreg.lr = 0.1;
+    lreg.lr = 0.001;
 
     std::vector<double> r;
     double x1, x2, x3, y;
     Data d;
+
+    //Train for nsteps
 
     for (int i = 0; i < 100; i++)
     {
 
         x1 = (float)rand() / RAND_MAX *1;
         x2 = (float)rand() / RAND_MAX *1;
-        x3 = (float)rand() / RAND_MAX *1;
+        // x3 = (float)rand() / RAND_MAX *1;
         r.push_back(x1);
         r.push_back(x2);
         r.push_back(x3);
         d.featVector = r;
 
-        y = 2 * x1 - 3 * x2 + 4 * x3;
+        y = 2 * x1 - 3 * x2 ;
         d.label = y;
 
         lreg.dataset.push_back(d);
